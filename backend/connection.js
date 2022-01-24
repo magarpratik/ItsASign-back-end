@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-require("dotenv").config();
+require('dotenv').config();
 
 const { DB_PASS } = process.env;
 const { URL } = process.env;
@@ -15,7 +15,7 @@ const options = {
 mongoose
   .connect(URL, options)
   .then(() => {
-    console.log("database is connected");
+    console.log('database is connected');
   })
   .catch((err) => {
     console.log(err);
