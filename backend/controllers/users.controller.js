@@ -2,7 +2,7 @@ const { Users } = require('../models/users.model');
 
 exports.getUsers = (req, res) => {
   Users.find()
-    .sort({ createdAt: -1 })
+    .sort('createdAt')
     .then((users) => {
       res.status(200).send({ users });
     })

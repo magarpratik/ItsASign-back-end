@@ -1,14 +1,12 @@
-const { Lessons } = require('../models/lessons.model');
+const { Courses } = require("../models/lessons.model");
 
-exports.getLessons = (req, res) => {
-  Lessons.find()
+exports.getCourses = (req, res) => {
+  Courses.find()
     .sort({ createdAt: -1 })
-    .then((lessons) => {
-      res.status(200).send({ lessons });
+    .then((courses) => {
+      res.status(200).send({ courses });
     })
     .catch((err) => {
-      res.status(400).send(
-        `There was an error with loading Lessons. ${err}`,
-      );
+      res.status(400).send(`There was an error with loading Courses. ${err}`);
     });
 };
