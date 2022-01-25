@@ -1,49 +1,47 @@
-/* eslint-env node, mocha */
-/* eslint-disable no-unused-vars */
-require('dotenv').config({ path: `${__dirname}/.env.test` });
-const mongoose = require('mongoose');
-const { expect } = require('chai');
-const should = require('chai').should();
-const request = require('supertest');
-const app = require('../app');
+// /* eslint-env node, mocha */
+// /* eslint-disable no-unused-vars */
+// require("dotenv").config({ path: `${__dirname}/.env.test` });
+// const mongoose = require("mongoose");
+// const { expect } = require("chai");
+// const should = require("chai").should();
+// const request = require("supertest");
+// const app = require("../app");
 
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
-before((done) => {
-  const { DB_PASS } = process.env;
-  const { URL } = process.env;
-  const { DB_USER } = process.env;
+// before((done) => {
+//     const { DB_PASS } = process.env;
+//     const { URL } = process.env;
+//     const { DB_USER } = process.env;
 
-  const options = {
-    user: DB_USER,
-    pass: DB_PASS,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
+//     const options = {
+//         user: DB_USER,
+//         pass: DB_PASS,
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     };
 
-  mongoose.connect(URL, options);
-  mongoose.connection
-    .once('open', () => {
-      done();
-    })
-    .on('error', (error) => {
-      console.warn('warning', error);
-      done(error);
-    });
-});
-// beforeEach((done) => {
-//     done();
+//     mongoose.connect(URL, options);
+//     mongoose.connection
+//         .once("open", () => {
+//             done();
+//         })
+//         .on("error", (error) => {
+//             console.warn("warning", error);
+//             done(error);
+//         });
 // });
-after(() => {
-  mongoose.disconnect();
-});
 
-describe('GET /api/users', (done) => {
-  it('200: returns list of all users', () => request(app)
-    .get('/api/users')
-    .expect(200)
-    .then((res) => {
-      const { users } = res.body;
-      users.should.have.lengthOf(12);
-    }));
-});
+// after(() => {
+//     mongoose.disconnect();
+// });
+
+// describe("GET /api/users", (done) => {
+//     it("200: returns list of all users", () =>
+//         request(app)
+//             .get("/api/users")
+//             .expect(200)
+//             .then(({ body: { users } }) => {
+//                 users.should.be.a.array;
+//             }));
+// });
