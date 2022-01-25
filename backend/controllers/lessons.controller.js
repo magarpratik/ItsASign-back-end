@@ -1,4 +1,4 @@
-const { Lessons } = require("../models/lessons.model");
+const { Lessons } = require('../models/lessons.model');
 
 exports.getLessons = (req, res) => {
   Lessons.find()
@@ -7,6 +7,8 @@ exports.getLessons = (req, res) => {
       res.status(200).send({ lessons });
     })
     .catch((err) => {
-      res.status(400).send(`There was an error with loading Projects. ${err}`);
+      res.status(400).send(
+        `There was an error with loading Lessons. ${err}`,
+      );
     });
 };
