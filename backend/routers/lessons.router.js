@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 
-const lessonsRouter = express.Router();
-const { getLessons } = require('../controllers/lessons.controller');
+const coursesRouter = express.Router();
+const { getCourses } = require("../controllers/lessons.controller");
 
-lessonsRouter.get('/', getLessons);
+coursesRouter.get("/", getCourses);
 
-module.exports = lessonsRouter;
+module.exports = coursesRouter;
