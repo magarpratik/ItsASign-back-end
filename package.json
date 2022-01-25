@@ -12,7 +12,7 @@
     },
     "scripts": {
         "prepare": "husky install",
-        "test": "mocha 'backend/test'"
+        "test": "mocha backend/test --recursive"
     },
     "dependencies": {
         "chai": "^4.3.4",
