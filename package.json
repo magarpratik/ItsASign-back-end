@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "chai": "^4.3.4",
+        "chai-sorted": "^0.2.0",
         "cors": "^2.8.5",
         "dotenv": "^14.2.0",
         "express": "^4.17.2",
