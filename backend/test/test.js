@@ -1,5 +1,6 @@
 /* eslint-env node, mocha */
 /* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
 require("dotenv").config({ path: `${__dirname}/.env.test` });
 const mongoose = require("mongoose");
 const { expect } = require("chai");
@@ -39,49 +40,64 @@ after(() => {
 });
 
 describe("GET /api/users", (done) => {
-  it("200: returns list of all users", () =>
+  xit("200: returns list of all users", () =>
     request(app)
       .get("/api/users")
       .expect(200)
       .then((res) => {
         const { users } = res.body;
-
         users.should.have.lengthOf(12);
       }));
 });
-describe("GET /api/courses", (done) => {
-  it("200: returns list of all courses", () =>
-    request(app)
+describe("GET /api/courses", () => {
+  it("200: returns list of all courses", () => {
+    return request(app)
       .get("/api/courses")
       .expect(200)
       .then(({ body }) => {
         const { courses } = body;
-        courses.should.have.lengthOf(9);
-      }));
+        expect(courses).to.have.lengthOf(9);
+      });
+  });
 });
-describe("GET /api/courses/:course_topic", (done) => {
+describe("GET /api/courses/:course_topic", () => {
   it("200: returns list of all courses with the requested topic", () => {
     const course_topic = "alpha";
-    request(app)
+    return request(app)
       .get(`/api/courses/${course_topic}`)
       .expect(200)
       .then(({ body }) => {
         const { courses } = body;
-        courses.should.have.lengthOf(2);
+
+        expect(courses).to.have.lengthOf(2);
       });
   });
 });
-describe("GET /api/courses/:course_topic/:question", (done) => {
+describe("GET /api/courses/:course_topic/:lesson_number", () => {
   it("200: returns list of all questions within the requested topic and lesson number", () => {
     const course_topic = "alpha";
     const lesson_number = 1;
-    request(app)
+    return request(app)
       .get(`/api/courses/${course_topic}/${lesson_number}`)
       .expect(200)
       .then(({ body }) => {
         const { questions } = body;
-        console.log(body);
-        questions.should.have.lengthOf(2);
+        expect(questions).to.have.lengthOf(2);
+      });
+  });
+});
+describe("GET /api/courses/:course_topic/:lesson_number/:index", () => {
+  it("200: returns a question within the requested topic and lesson number", () => {
+    const course_topic = "alpha";
+    const lesson_number = 1;
+    const index = 0;
+    return request(app)
+      .get(`/api/courses/${course_topic}/${lesson_number}/${index}`)
+      .expect(200)
+      .then(({ body }) => {
+        const { question } = body;
+        console.log(question);
+        expect(question).to.be.a("string");
       });
   });
 });
