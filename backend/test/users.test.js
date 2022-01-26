@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 require("dotenv").config({ path: `${__dirname}/.env.test` });
 const mongoose = require("mongoose");
 const { expect } = require("chai");
@@ -40,8 +40,7 @@ before((done) => {
 after(() => {
     mongoose.disconnect();
 });
-console.log("test");
-describe("GET /api/users", (done) => {
+describe("GET /api/users", () => {
     it("200: returns list of all users", () => {
         return request(app)
             .get("/api/users")
@@ -64,25 +63,15 @@ describe("GET /api/users", (done) => {
                 });
             });
     });
-    xit("200: returns list sorted by creation date as default", () => {
-        return request(app)
-            .get("/api/users")
-            .expect(200)
-            .then(({ body: { users } }) => {
-                expect(users).to.be.sortedBy("createdAt", {
-                    ascending: true,
-                });
-            });
-    });
 });
 
-describe("GET /api/users/:user_id", (done) => {
+describe("GET /api/users/:user_id", () => {
     it("200: returns a specific user", () => {
         return request(app)
             .get("/api/users/Cook")
             .expect(200)
             .then(({ body: { user } }) => {
-                expect(user[0]).to.eql({
+                expect(user).to.eql({
                     _id: "61f1244482f0650a75d7e30b",
                     username: "Cook",
                     picture: "http://placehold.it/32x32",
@@ -96,6 +85,21 @@ describe("GET /api/users/:user_id", (done) => {
                     },
                     createdAt: "2016-08-22T08:52:14.000Z",
                     updatedAt: "2013-03-23T18:18:55.000Z",
+                });
+            });
+    });
+});
+
+describe("GET /api/users/:user_id/progress", () => {
+    it("200: get object containing details of progress", () => {
+        return request(app)
+            .get("/api/users/Cook/progress")
+            .expect(200)
+            .then(({ body: { progress } }) => {
+                expect(progress).to.deep.equal({
+                    completed_lessons: [],
+                    total_xp: 101,
+                    badges: [],
                 });
             });
     });
