@@ -56,7 +56,32 @@ describe("GET /api/courses", (done) => {
       .expect(200)
       .then(({ body }) => {
         const { courses } = body;
-        console.log(courses);
-        courses.should.have.lengthOf(3);
+        courses.should.have.lengthOf(9);
       }));
+});
+describe("GET /api/courses/:course_topic", (done) => {
+  it("200: returns list of all courses with the requested topic", () => {
+    const course_topic = "alpha";
+    request(app)
+      .get(`/api/courses/${course_topic}`)
+      .expect(200)
+      .then(({ body }) => {
+        const { courses } = body;
+        courses.should.have.lengthOf(2);
+      });
+  });
+});
+describe("GET /api/courses/:course_topic/:question", (done) => {
+  it("200: returns list of all questions within the requested topic and lesson number", () => {
+    const course_topic = "alpha";
+    const lesson_number = 1;
+    request(app)
+      .get(`/api/courses/${course_topic}/${lesson_number}`)
+      .expect(200)
+      .then(({ body }) => {
+        const { questions } = body;
+        console.log(body);
+        questions.should.have.lengthOf(2);
+      });
+  });
 });
