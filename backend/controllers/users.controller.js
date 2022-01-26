@@ -16,7 +16,7 @@ exports.getUser = (req, res) => {
     const { username } = req.params;
     Users.find({ username })
         .then((userArray) => {
-            let user = userArray[0];
+            const user = userArray[0];
             res.status(200).send({ user });
         })
         .catch((err) => {
@@ -30,7 +30,7 @@ exports.getUserProgress = (req, res) => {
     const { username } = req.params;
     Users.find({ username })
         .then((userArray) => {
-            let progress = userArray[0].progress;
+            const { progress } = userArray[0];
             res.status(200).send({ progress });
         })
         .catch((err) => {
