@@ -91,8 +91,8 @@ exports.Signup = async (req, res) => {
       message: "Registration Success",
     });
   } catch (error) {
-    console.error("signup-error", error);
-    return res.status(500).json({
+    //console.error("signup-error", error);
+    return res.status(400).json({
       error: true,
       message: "Cannot Register",
     });

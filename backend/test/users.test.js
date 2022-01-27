@@ -114,9 +114,7 @@ describe("PATCH /api/users/:username", () => {
         expect(updated).to.eql(1);
       });
   });
-});
 
-describe("PATCH /api/users/:username", () => {
   it("201: updates user password", () => {
     return request(app)
       .patch("/api/users/Knowles")
@@ -126,9 +124,7 @@ describe("PATCH /api/users/:username", () => {
         expect(updated).to.eql(1);
       });
   });
-});
 
-describe("PATCH /api/users/:username", () => {
   it("201: updates user progress", () => {
     return request(app)
       .patch("/api/users/Knowles")
@@ -144,61 +140,60 @@ describe("PATCH /api/users/:username", () => {
         expect(updated).to.eql(1);
       });
   });
-  describe("POST /api/users/signup", () => {
-    it("201: posts a user to the database", () => {
-      return request(app)
-        .post("/api/users/signup")
-        .send({
-          username: "AndyRobots",
-          email: "andyrobotdroid@gmail.com",
-          password: "10021994",
-          confirmPassword: "10021994",
-        })
-        .expect(200)
-        .then(({ body }) => {
-          expect(body).to.eql({
-            success: true,
-            message: "Registration Success",
-          });
+});
+
+describe("POST /api/users/signup", () => {
+  it("201: posts a user to the database", () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        username: "AndyRobots",
+        email: "andyrobotdroid@gmail.com",
+        password: "10021994",
+        confirmPassword: "10021994",
+      })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.eql({
+          success: true,
+          message: "Registration Success",
         });
-    });
+      });
   });
-  describe("POST /api/users/signup", () => {
-    it("200: gives error if email is already in use ", () => {
-      return request(app)
-        .post("/api/users/signup")
-        .send({
-          username: "ARobots",
-          email: "andyrobotdroid@gmail.com",
-          password: "1001994",
-          confirmPassword: "1001994",
-        })
-        .expect(200)
-        .then(({ body }) => {
-          expect(body).to.eql({
-            error: true,
-            message: "Email is already in use",
-          });
+
+  it("200: gives error if email is already in use ", () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        username: "ARobots",
+        email: "andyrobotdroid@gmail.com",
+        password: "1001994",
+        confirmPassword: "1001994",
+      })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.eql({
+          error: true,
+          message: "Email is already in use",
         });
-    });
+      });
   });
-  describe("POST /api/users/signup", () => {
-    it("500: gives error if username exists", () => {
-      return request(app)
-        .post("/api/users/signup")
-        .send({
-          username: "AndyRobots",
-          email: "pratikmagar@gmail.com",
-          password: "1001994",
-          confirmPassword: "1001994",
-        })
-        .expect(500)
-        .then(({ body }) => {
-          expect(body).to.eql({
-            error: true,
-            message: "Cannot Register",
-          });
+
+  it("400: gives error if username exists", () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        username: "AndyRobots",
+        email: "pratikmagar@gmail.com",
+        password: "1001994",
+        confirmPassword: "1001994",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).to.eql({
+          error: true,
+          message: "Cannot Register",
         });
-    });
+      });
   });
 });
