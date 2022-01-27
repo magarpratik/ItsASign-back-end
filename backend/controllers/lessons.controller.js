@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { Courses } = require("../models/lessons.model");
+const { Courses } = require('../models/lessons.model');
 
 exports.getCourses = (req, res) => {
   Courses.find()
@@ -24,7 +24,7 @@ exports.getCourse_by_topic = (req, res) => {
 };
 exports.getLessons_by_topic = (req, res) => {
   const { course_topic, lesson_number } = req.params;
-  console.log("course_topic", course_topic);
+  console.log('course_topic', course_topic);
   Courses.find({ course_topic, lesson_number })
     .then((courses) => {
       res.status(200).send({ questions: courses[0].questions });
