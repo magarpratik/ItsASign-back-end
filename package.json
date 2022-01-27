@@ -1,25 +1,26 @@
 {
-    "devDependencies": {
-        "eslint": "^8.7.0",
-        "eslint-config-airbnb": "^19.0.4",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-jest": "^25.7.0",
-        "eslint-plugin-jsx-a11y": "^6.5.1",
-        "eslint-plugin-react": "^7.28.0",
-        "eslint-plugin-react-hooks": "^4.3.0",
-        "husky": "^7.0.4",
-        "mocha": "^9.2.0"
-    },
-    "scripts": {
-        "prepare": "husky install",
-        "test": "mocha 'backend/test'"
-    },
-    "dependencies": {
-        "chai": "^4.3.4",
-        "cors": "^2.8.5",
-        "dotenv": "^14.2.0",
-        "express": "^4.17.2",
-        "mongoose": "^6.1.7",
-        "supertest": "^6.2.2"
-    }
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.7.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
+    "mocha": "^9.2.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "test": "mocha backend/test --recursive"
+  },
+  "dependencies": {
+    "chai": "^4.3.4",
+    "chai-sorted": "^0.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.7",
+    "supertest": "^6.2.2"
+  }
 }
