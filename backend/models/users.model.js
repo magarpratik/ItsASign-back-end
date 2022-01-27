@@ -9,6 +9,8 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: Number, required: true },
+    resetPasswordToken: { type: String, default: null },
+    resetPasswordExpires: { type: Date, default: null },
     progress: {
       completed_lessons: { type: Array },
       total_xp: { type: Number },
