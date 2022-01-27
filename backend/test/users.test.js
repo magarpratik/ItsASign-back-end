@@ -88,3 +88,30 @@ describe("GET /api/users/:user_id", () => {
       });
   });
 });
+
+describe("GET /api/users/:username/progress", () => {
+  it("200: get object containing details of progress", () => {
+    return request(app)
+      .get("/api/users/Cook/progress")
+      .expect(200)
+      .then(({ body: { progress } }) => {
+        expect(progress).to.deep.equal({
+          completed_lessons: [],
+          total_xp: 101,
+          badges: [],
+        });
+      });
+  });
+});
+
+describe("PATCH /api/users/:username", () => {
+  it("201: updates user email", () => {
+    return request(app)
+      .patch("/api/users/Langley")
+      .send({ email: "test@example.com" })
+      .expect(201)
+      .then(({ body: { updated } }) => {
+        expect(updated).to.eql(true);
+      });
+  });
+});
