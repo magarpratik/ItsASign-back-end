@@ -48,7 +48,7 @@ describe("GET /api/users", () => {
         users.should.be.a("array");
         users.should.be.lengthOf(12);
         users.forEach((user) => {
-          expect(user).to.have.all.keys(
+          expect(user).to.have.keys(
             "_id",
             "username",
             "picture",
@@ -67,23 +67,23 @@ describe("GET /api/users", () => {
 describe("GET /api/users/:user_id", () => {
   it.skip("200: returns a specific user", () => {
     return request(app)
-      .get("/api/users/Cook")
+      .get("/api/users/Mejia")
       .expect(200)
       .then(({ body: { user } }) => {
         expect(user).to.eql({
-          _id: "61f1244482f0650a75d7e30b",
-          username: "Cook",
+          _id: "61f2b4f082f0650a75fce302",
+          createdAt: "1977-10-29T03:02:03.000Z",
+          updatedAt: "1982-03-06T03:36:01.000Z",
+          username: "Mejia",
           picture: "http://placehold.it/32x32",
-          name: "Michael Lyons",
-          email: "michaellyons@moreganic.com",
-          password: 496401,
+          name: "Gertrude Hardin",
+          email: "gertrudehardin@tellifly.com",
+          password: -97145,
           progress: {
-            completed_lessons: [],
-            total_xp: 101,
-            badges: [],
+            completed_lessons: ["est", "elit"],
+            total_xp: 124,
+            badges: ["aute", "laborum", "sint"],
           },
-          createdAt: "2016-08-22T08:52:14.000Z",
-          updatedAt: "2013-03-23T18:18:55.000Z",
         });
       });
   });
@@ -92,13 +92,13 @@ describe("GET /api/users/:user_id", () => {
 describe("GET /api/users/:username/progress", () => {
   it.skip("200: get object containing details of progress", () => {
     return request(app)
-      .get("/api/users/Cook/progress")
+      .get("/api/users/Mejia/progress")
       .expect(200)
       .then(({ body: { progress } }) => {
         expect(progress).to.deep.equal({
-          completed_lessons: [],
-          total_xp: 101,
-          badges: [],
+          completed_lessons: ["est", "elit"],
+          total_xp: 124,
+          badges: ["aute", "laborum", "sint"],
         });
       });
   });

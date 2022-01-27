@@ -15,12 +15,19 @@
     "test": "mocha backend/test --recursive"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.1",
     "chai": "^4.3.4",
     "chai-sorted": "^0.2.0",
+    "command": "^0.0.5",
     "cors": "^2.8.5",
-    "dotenv": "^14.2.0",
+    "dotenv": "^14.3.2",
     "express": "^4.17.2",
-    "mongoose": "^6.1.7",
-    "supertest": "^6.2.2"
+    "joi": "^17.6.0",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^6.1.8",
+    "nodemailer": "^6.7.2",
+    "supertest": "^6.2.2",
+    "uuid": "^8.3.2"
   }
 }
