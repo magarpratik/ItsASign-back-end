@@ -87,6 +87,15 @@ describe("GET /api/users/:user_id", () => {
         });
       });
   });
+
+  it("400: handle a non-existent user", () => {
+    return request(app)
+      .get("/api/users/nonexistentuser")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).to.eql("User does not exist");
+      });
+  });
 });
 
 describe("GET /api/users/:username/progress", () => {
@@ -179,7 +188,7 @@ describe("POST /api/users/signup", () => {
       });
   });
 
-  it("400: gives error if username exists", () => {
+  it("400: gives error if username already exists", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
@@ -193,6 +202,25 @@ describe("POST /api/users/signup", () => {
         expect(body).to.eql({
           error: true,
           message: "Cannot Register",
+        });
+      });
+  });
+
+  it("400: gives error if passwords do not match", () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        username: "TestUser",
+        email: "test@gmail.com",
+        password: "11111111",
+        confirmPassword: "22222222",
+      })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.eql({
+          error: true,
+          status: 400,
+          message: '"confirmPassword" must be [ref:password]',
         });
       });
   });

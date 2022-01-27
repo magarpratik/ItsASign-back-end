@@ -16,8 +16,12 @@ exports.getUser = (req, res) => {
   const { username } = req.params;
   Users.find({ username })
     .then((userArray) => {
-      const user = userArray[0];
-      res.status(200).send({ user });
+      if (userArray[0]) {
+        const user = userArray[0];
+        res.status(200).send({ user });
+      } else {
+        res.status(400).send({ message: "User does not exist" });
+      }
     })
     .catch((err) => {
       res.status(400).send(`There was an error with loading Users. ${err}`);
@@ -91,7 +95,7 @@ exports.Signup = async (req, res) => {
       message: "Registration Success",
     });
   } catch (error) {
-    //console.error("signup-error", error);
+    // console.error("signup-error", error);
     return res.status(400).json({
       error: true,
       message: "Cannot Register",
