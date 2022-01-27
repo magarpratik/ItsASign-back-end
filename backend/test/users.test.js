@@ -40,7 +40,7 @@ after(() => {
   mongoose.disconnect();
 });
 describe("GET /api/users", () => {
-  it.skip("200: returns list of all users", () => {
+  it("200: returns list of all users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -65,7 +65,7 @@ describe("GET /api/users", () => {
 });
 
 describe("GET /api/users/:user_id", () => {
-  it.skip("200: returns a specific user", () => {
+  it("200: returns a specific user", () => {
     return request(app)
       .get("/api/users/Mejia")
       .expect(200)
@@ -90,7 +90,7 @@ describe("GET /api/users/:user_id", () => {
 });
 
 describe("GET /api/users/:username/progress", () => {
-  it.skip("200: get object containing details of progress", () => {
+  it("200: get object containing details of progress", () => {
     return request(app)
       .get("/api/users/Mejia/progress")
       .expect(200)
@@ -105,9 +105,9 @@ describe("GET /api/users/:username/progress", () => {
 });
 
 describe("PATCH /api/users/:username", () => {
-  it.skip("201: updates user email", () => {
+  it("201: updates user email", () => {
     return request(app)
-      .patch("/api/users/Cathryn")
+      .patch("/api/users/Knowles")
       .send({ email: "test@example.com" })
       .expect(201)
       .then(({ body: { updated } }) => {
@@ -117,9 +117,9 @@ describe("PATCH /api/users/:username", () => {
 });
 
 describe("PATCH /api/users/:username", () => {
-  it.skip("201: updates user password", () => {
+  it("201: updates user password", () => {
     return request(app)
-      .patch("/api/users/Cathryn")
+      .patch("/api/users/Knowles")
       .send({ password: 444 })
       .expect(201)
       .then(({ body: { updated } }) => {
@@ -143,5 +143,62 @@ describe("PATCH /api/users/:username", () => {
       .then(({ body: { updated } }) => {
         expect(updated).to.eql(1);
       });
+  });
+  describe("POST /api/users/signup", () => {
+    it("201: posts a user to the database", () => {
+      return request(app)
+        .post("/api/users/signup")
+        .send({
+          username: "AndyRobots",
+          email: "andyrobotdroid@gmail.com",
+          password: "10021994",
+          confirmPassword: "10021994",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.eql({
+            success: true,
+            message: "Registration Success",
+          });
+        });
+    });
+  });
+  describe("POST /api/users/signup", () => {
+    it("200: gives error if email is already in use ", () => {
+      return request(app)
+        .post("/api/users/signup")
+        .send({
+          username: "ARobots",
+          email: "andyrobotdroid@gmail.com",
+          password: "1001994",
+          confirmPassword: "1001994",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.eql({
+            error: true,
+            message: "Email is already in use",
+          });
+        });
+    });
+  });
+  describe("POST /api/users/signup", () => {
+    it("500: gives error if username exists", () => {
+      return request(app)
+        .post("/api/users/signup")
+        .send({
+          username: "AndyRobots",
+          email: "pratikmagar@gmail.com",
+          password: "1001994",
+          confirmPassword: "1001994",
+        })
+        .expect(500)
+        .then(({ body }) => {
+          expect(body).to.eql({
+            error: true,
+            message: "Cannot Register",
+          });
+        });
+    });
   });
 });
