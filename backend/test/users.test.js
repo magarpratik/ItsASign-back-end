@@ -11,10 +11,9 @@ const chai = require("chai");
 const app = require("../app");
 
 chai.use(require("chai-sorted"));
-
 mongoose.Promise = global.Promise;
 
-before((done) => {
+before(() => {
   const { DB_PASS } = process.env;
   const { URL } = process.env;
   const { DB_USER } = process.env;
