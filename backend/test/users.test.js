@@ -40,7 +40,7 @@ after(() => {
   mongoose.disconnect();
 });
 describe("GET /api/users", () => {
-  it("200: returns list of all users", () => {
+  xit("200: returns list of all users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -112,6 +112,36 @@ describe("PATCH /api/users/:username", () => {
       .expect(201)
       .then(({ body: { updated } }) => {
         expect(updated).to.eql(true);
+      });
+  });
+});
+
+describe("GET /api/sign_in", () => {
+  it("200: successful sign in", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: -97145 })
+      .expect(200)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(true);
+      });
+  });
+  it("400: invalid username", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: 1234567890, password: -97145 })
+      .expect(400)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(false);
+      });
+  });
+  it("404: user doesn't exist", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "natassaa", password: -97145 })
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).to.eql("user doesn't exist");
       });
   });
 });

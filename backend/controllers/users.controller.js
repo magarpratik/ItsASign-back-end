@@ -90,3 +90,20 @@ exports.Signup = async (req, res) => {
     });
   }
 };
+
+exports.SignIn = (req, res) => {
+  const { username } = req.body;
+
+  const validUser = Joi.string().required().min(4).validate(username);
+  // let validPassword = Joi.assert(password, Joi.string().required().min(4));
+
+  Users.findOne({ username }).then((user) => {
+    if (user) {
+      return res.status(200).send({ successful: true });
+    } else if (validUser.error) {
+      return res.status(400).send({ successful: false });
+    } else if (!user) {
+      return res.status(404).send({ message: "user doesn't exist" });
+    }
+  });
+};
