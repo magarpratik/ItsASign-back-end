@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-require("dotenv").config({ path: `${__dirname}/.env.test` });
+const mongoose = require('mongoose');
+require('dotenv').config({ path: `${__dirname}/.env.test` });
 
 const { DB_PASS } = process.env;
 const { URL } = process.env;
@@ -14,7 +14,7 @@ const options = {
 mongoose
   .connect(URL, options)
   .then(() => {
-    console.log("database is connected");
+    console.log('database is connected');
   })
   .catch((err) => {
     console.log(err);
