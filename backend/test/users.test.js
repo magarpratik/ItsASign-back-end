@@ -39,6 +39,7 @@ before(() => {
 after(() => {
   mongoose.disconnect();
 });
+
 describe("GET /api/users", () => {
   it("200: returns list of all users", () => {
     return request(app)
@@ -222,6 +223,17 @@ describe("POST /api/users/signup", () => {
           status: 400,
           message: '"confirmPassword" must be [ref:password]',
         });
+      });
+  });
+});
+
+describe("DELETE /api/users/:user_id", () => {
+  it("200: delete a user", () => {
+    return request(app)
+      .delete("/api/users/AndyRobots")
+      .expect(200)
+      .then(({ body: { deletedCount } }) => {
+        expect(deletedCount).to.eql(1);
       });
   });
 });

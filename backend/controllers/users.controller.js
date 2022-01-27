@@ -28,6 +28,13 @@ exports.getUser = (req, res) => {
     });
 };
 
+exports.deleteUser = (req, res) => {
+  const { username } = req.params;
+  Users.deleteOne({ username }).then((result) => {
+    res.status(200).send(result);
+  });
+};
+
 exports.getUserProgress = (req, res) => {
   const { username } = req.params;
   Users.find({ username })

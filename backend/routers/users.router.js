@@ -6,12 +6,13 @@ const usersRouter = express.Router();
 const {
   getUsers,
   getUser,
+  deleteUser,
   getUserProgress,
   patchUserDetails,
 } = require('../controllers/users.controller');
 
 usersRouter.get('/', getUsers);
-usersRouter.route('/:username').get(getUser).patch(patchUserDetails);
+usersRouter.route('/:username').get(getUser).patch(patchUserDetails).delete(deleteUser);
 usersRouter.route('/:username/progress').get(getUserProgress);
 usersRouter.post('/signup', cleanBody, AuthController.Signup);
 
