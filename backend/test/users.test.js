@@ -105,10 +105,10 @@ describe("GET /api/users/:username/progress", () => {
 });
 
 describe("PATCH /api/users/:username", () => {
-  it("201: updates user email", () => {
+  it.skip("201: updates user email", () => {
     return request(app)
       .patch("/api/users/Cathryn")
-      .send({ email: "testing@example.com" })
+      .send({ email: "test@example.com" })
       .expect(201)
       .then(({ body: { updated } }) => {
         expect(updated).to.eql(1);
@@ -117,10 +117,28 @@ describe("PATCH /api/users/:username", () => {
 });
 
 describe("PATCH /api/users/:username", () => {
-  it("201: updates user password", () => {
+  it.skip("201: updates user password", () => {
     return request(app)
       .patch("/api/users/Cathryn")
       .send({ password: 444 })
+      .expect(201)
+      .then(({ body: { updated } }) => {
+        expect(updated).to.eql(1);
+      });
+  });
+});
+
+describe("PATCH /api/users/:username", () => {
+  it("201: updates user progress", () => {
+    return request(app)
+      .patch("/api/users/Knowles")
+      .send({
+        progress: {
+          completed_lessons: ["test-lesson-1", "test-lesson-2"],
+          total_xp: 50,
+          badges: ["test-badge-1", "test-badge-2"],
+        },
+      })
       .expect(201)
       .then(({ body: { updated } }) => {
         expect(updated).to.eql(1);

@@ -1,8 +1,8 @@
-const { Users } = require('../models/users.model');
+const { Users } = require("../models/users.model");
 
 exports.getUsers = (req, res) => {
   Users.find()
-    .sort('createdAt')
+    .sort("createdAt")
     .then((users) => {
       res.status(200).send({ users });
     })
@@ -37,7 +37,7 @@ exports.getUserProgress = (req, res) => {
 
 exports.patchUserDetails = (req, res) => {
   const { username } = req.params;
-  const { email, password } = req.body;
+  const { email, password, progress } = req.body;
 
   if (email) {
     Users.updateOne({ username }, { email }).then((result) => {
@@ -45,6 +45,10 @@ exports.patchUserDetails = (req, res) => {
     });
   } else if (password) {
     Users.updateOne({ username }, { password }).then((result) => {
+      res.status(201).send({ updated: result.modifiedCount });
+    });
+  } else if (progress) {
+    Users.updateOne({ username }, { progress }).then((result) => {
       res.status(201).send({ updated: result.modifiedCount });
     });
   }
