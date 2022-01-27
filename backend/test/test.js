@@ -50,15 +50,14 @@ describe("GET /api/users", (done) => {
       }));
 });
 describe("GET /api/courses", () => {
-  it("200: returns list of all courses", () => {
-    return request(app)
+  it("200: returns list of all courses", () =>
+    request(app)
       .get("/api/courses")
       .expect(200)
       .then(({ body }) => {
         const { courses } = body;
         expect(courses).to.have.lengthOf(9);
-      });
-  });
+      }));
 });
 describe("GET /api/courses/:course_topic", () => {
   it("200: returns list of all courses with the requested topic", () => {
@@ -86,18 +85,31 @@ describe("GET /api/courses/:course_topic/:lesson_number", () => {
       });
   });
 });
-describe("GET /api/courses/:course_topic/:lesson_number/:index", () => {
+describe("GET /api/courses/:course_topic/:lesson_number/:index/question", () => {
   it("200: returns a question within the requested topic and lesson number", () => {
     const course_topic = "alpha";
     const lesson_number = 1;
     const index = 0;
     return request(app)
-      .get(`/api/courses/${course_topic}/${lesson_number}/${index}`)
+      .get(`/api/courses/${course_topic}/${lesson_number}/${index}/question`)
       .expect(200)
       .then(({ body }) => {
         const { question } = body;
-        console.log(question);
         expect(question).to.be.a("string");
+      });
+  });
+});
+describe("GET /api/courses/:course_topic/:lesson_number/:index/answers", () => {
+  it("200: returns an object with 4 answer keys", () => {
+    const course_topic = "alpha";
+    const lesson_number = 1;
+    const index = 0;
+    return request(app)
+      .get(`/api/courses/${course_topic}/${lesson_number}/${index}/answers`)
+      .expect(200)
+      .then(({ body }) => {
+        const { answers } = body;
+        expect(answers).to.have.all.keys("a", "b", "c", "d");
       });
   });
 });
