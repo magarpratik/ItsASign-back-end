@@ -38,11 +38,19 @@ exports.getUserProgress = (req, res) => {
 
 exports.patchUserDetails = (req, res) => {
   const { username } = req.params;
-  const { email } = req.body;
+  const { email, password, progress } = req.body;
 
   if (email) {
     Users.updateOne({ username }, { email }).then((result) => {
-      res.status(201).send({ updated: result.acknowledged });
+      res.status(201).send({ updated: result.modifiedCount });
+    });
+  } else if (password) {
+    Users.updateOne({ username }, { password }).then((result) => {
+      res.status(201).send({ updated: result.modifiedCount });
+    });
+  } else if (progress) {
+    Users.updateOne({ username }, { progress }).then((result) => {
+      res.status(201).send({ updated: result.modifiedCount });
     });
   }
 };

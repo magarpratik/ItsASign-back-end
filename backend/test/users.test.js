@@ -40,7 +40,7 @@ after(() => {
   mongoose.disconnect();
 });
 describe("GET /api/users", () => {
-  it("200: returns list of all users", () => {
+  it.skip("200: returns list of all users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -65,7 +65,7 @@ describe("GET /api/users", () => {
 });
 
 describe("GET /api/users/:user_id", () => {
-  it("200: returns a specific user", () => {
+  it.skip("200: returns a specific user", () => {
     return request(app)
       .get("/api/users/Mejia")
       .expect(200)
@@ -90,7 +90,7 @@ describe("GET /api/users/:user_id", () => {
 });
 
 describe("GET /api/users/:username/progress", () => {
-  it("200: get object containing details of progress", () => {
+  it.skip("200: get object containing details of progress", () => {
     return request(app)
       .get("/api/users/Mejia/progress")
       .expect(200)
@@ -105,13 +105,43 @@ describe("GET /api/users/:username/progress", () => {
 });
 
 describe("PATCH /api/users/:username", () => {
-  it("201: updates user email", () => {
+  it.skip("201: updates user email", () => {
     return request(app)
-      .patch("/api/users/Langley")
+      .patch("/api/users/Cathryn")
       .send({ email: "test@example.com" })
       .expect(201)
       .then(({ body: { updated } }) => {
-        expect(updated).to.eql(true);
+        expect(updated).to.eql(1);
+      });
+  });
+});
+
+describe("PATCH /api/users/:username", () => {
+  it.skip("201: updates user password", () => {
+    return request(app)
+      .patch("/api/users/Cathryn")
+      .send({ password: 444 })
+      .expect(201)
+      .then(({ body: { updated } }) => {
+        expect(updated).to.eql(1);
+      });
+  });
+});
+
+describe("PATCH /api/users/:username", () => {
+  it("201: updates user progress", () => {
+    return request(app)
+      .patch("/api/users/Knowles")
+      .send({
+        progress: {
+          completed_lessons: ["test-lesson-1", "test-lesson-2"],
+          total_xp: 50,
+          badges: ["test-badge-1", "test-badge-2"],
+        },
+      })
+      .expect(201)
+      .then(({ body: { updated } }) => {
+        expect(updated).to.eql(1);
       });
   });
 });
