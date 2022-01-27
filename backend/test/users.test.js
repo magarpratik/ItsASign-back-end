@@ -48,7 +48,7 @@ describe("GET /api/users", () => {
         users.should.be.a("array");
         users.should.be.lengthOf(12);
         users.forEach((user) => {
-          expect(user).to.have.all.keys(
+          expect(user).to.have.keys(
             "_id",
             "username",
             "picture",
