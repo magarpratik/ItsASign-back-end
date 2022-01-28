@@ -29,5 +29,16 @@
     "nodemailer": "^6.7.2",
     "supertest": "^6.2.2",
     "uuid": "^8.3.2"
+  },
+  "name": "its-a-sign-app",
+  "description": "a sign app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "16.x",
+    "npm": "7.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Josh-Human/ItsASign.git"
   }
 }
