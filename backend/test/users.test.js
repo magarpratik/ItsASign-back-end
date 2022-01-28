@@ -141,7 +141,25 @@ describe("GET /api/sign_in", () => {
       .send({ username: "natassaa", password: -97145 })
       .expect(404)
       .then(({ body: { message } }) => {
-        expect(message).to.eql("user doesn't exist");
+        expect(message).to.eql("User does not exist");
       });
   });
+  it("400: invalid password", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: "Hello" })
+      .expect(400)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(false);
+      });
+  });
+  it("401: password does not match", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: -9765 })
+      .expect(401)
+      .then(({ body: { message } }) => {
+        expect(message).to.eql("Wrong password");
+      });
+  })
 });
