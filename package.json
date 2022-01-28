@@ -11,7 +11,7 @@
     "mocha": "^9.2.0"
   },
   "scripts": {
-    "start": "node listen.js",
+    "start": "node ./backend/listen.js",
     "prepare": "husky install",
     "test": "mocha backend/test --recursive"
   },
