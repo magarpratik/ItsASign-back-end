@@ -127,7 +127,7 @@ exports.Signup = async (req, res) => {
 };
 
 exports.SignIn = (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.query;
 
   const validUser = Joi.string().required().min(4).validate(username);
   const validPassword = Joi.string().required().validate(password);

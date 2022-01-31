@@ -239,10 +239,11 @@ describe("DELETE /api/users/:user_id", () => {
 });
 
 describe("GET /api/sign_in", () => {
-  it("200: successful sign in", () => {
+  it.only("200: successful sign in", () => {
+    const username = "CharlotteThompson";
+    const password = "password1";
     return request(app)
-      .get("/api/sign_in")
-      .send({ username: "Sidd", password: "1001a994" })
+      .get(`/api/sign_in/?username=${username}&password=${password}`)
       .expect(200)
       .then(({ body: { successful } }) => {
         expect(successful).to.eql(true);
