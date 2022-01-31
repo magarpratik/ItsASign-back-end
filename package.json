@@ -16,6 +16,7 @@
     "test": "mocha backend/test --recursive"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "chai": "^4.3.4",

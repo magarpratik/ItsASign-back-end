@@ -1,6 +1,7 @@
+/* eslint-disable */
 const Joi = require("joi");
-const { Users } = require("../models/users.model");
-
+const { Users, hashPassword } = require("../models/users.model");
+const bcrypt = require("bcrypt");
 exports.getUsers = (req, res) => {
   Users.find()
     .sort("createdAt")
@@ -93,21 +94,24 @@ exports.Signup = async (req, res) => {
         error: true,
         message: "Email is already in use",
       });
-    } else {
-      // Check if the username is unique.
-      await Users.findOne({
-        username: result.value.username,
+    }
+    // Check if the username is unique.
+    await Users.findOne({
+      username: result.value.username,
+    });
+    if (user) {
+      return res.json({
+        error: true,
+        message: `${user.username} is already in use`,
       });
-      if (user) {
-        return res.json({
-          error: true,
-          message: `${user.username} is already in use`,
-        });
-      }
     }
 
+    result.value.password = await hashPassword(result.value.password);
+
     const newUser = new Users(result.value);
+
     await newUser.save();
+
     return res.status(200).json({
       success: true,
       message: "Registration Success",
@@ -116,8 +120,38 @@ exports.Signup = async (req, res) => {
     // console.error("signup-error", error);
     return res.status(400).json({
       success: false,
-      error: error,
+      error,
       message: "Cannot Register",
+    });
+  }
+};
+
+exports.SignIn = (req, res) => {
+  const { username, password } = req.body;
+
+  const validUser = Joi.string().required().min(4).validate(username);
+  const validPassword = Joi.string().required().validate(password);
+
+  if (validUser.error || validPassword.error) {
+    return res.status(401).send({ successful: false });
+  } else {
+    Users.findOne({ username }).then((user) => {
+      if (!user) {
+        return res.status(404).send({ message: "User does not exist" });
+      } else if (user) {
+        bcrypt.compare(password, user.password, function (err, result) {
+          if (err) {
+            return res
+              .status(401)
+              .send({ message: "there was an error signing in" });
+          } else if (result) {
+            return res.status(200).send({ successful: true });
+          } else
+            return res
+              .status(401)
+              .send({ successful: false, message: "Wrong password" });
+        });
+      }
     });
   }
 };
