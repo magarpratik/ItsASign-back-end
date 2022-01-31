@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const { Schema } = mongoose;
 
@@ -18,7 +18,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const hashPassword = async (password) => {
@@ -26,11 +26,11 @@ const hashPassword = async (password) => {
     const salt = await bcrypt.genSalt(10); // 10 rounds
     return await bcrypt.hash(password, salt);
   } catch (error) {
-    throw new Error("Hashing failed", error);
+    throw new Error('Hashing failed', error);
   }
 };
 
-const Users = mongoose.model("User", userSchema);
+const Users = mongoose.model('User', userSchema);
 // converting the raw table into a workable model
 // with model(<name>, <schemaUsed>)
 

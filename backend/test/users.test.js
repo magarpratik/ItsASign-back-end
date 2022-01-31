@@ -242,7 +242,7 @@ describe("GET /api/sign_in", () => {
   it("200: successful sign in", () => {
     return request(app)
       .get("/api/sign_in")
-      .send({ username: "Mejia", password: "-97145" })
+      .send({ username: "Sidd", password: "1001a994" })
       .expect(200)
       .then(({ body: { successful } }) => {
         expect(successful).to.eql(true);
@@ -251,8 +251,8 @@ describe("GET /api/sign_in", () => {
   it("400: invalid username", () => {
     return request(app)
       .get("/api/sign_in")
-      .send({ username: 1234567890, password: -97145 })
-      .expect(400)
+      .send({ username: 1234567890, password: "97145" })
+      .expect(401)
       .then(({ body: { successful } }) => {
         expect(successful).to.eql(false);
       });
@@ -260,7 +260,7 @@ describe("GET /api/sign_in", () => {
   it("404: user doesn't exist", () => {
     return request(app)
       .get("/api/sign_in")
-      .send({ username: "natassaa", password: -97145 })
+      .send({ username: "natassaa", password: "-97145" })
       .expect(404)
       .then(({ body: { message } }) => {
         expect(message).to.eql("User does not exist");
@@ -269,8 +269,8 @@ describe("GET /api/sign_in", () => {
   it("400: invalid password", () => {
     return request(app)
       .get("/api/sign_in")
-      .send({ username: "Mejia", password: "Hello" })
-      .expect(400)
+      .send({ username: "Mejia", password: 5678 })
+      .expect(401)
       .then(({ body: { successful } }) => {
         expect(successful).to.eql(false);
       });
@@ -278,10 +278,10 @@ describe("GET /api/sign_in", () => {
   it("401: password does not match", () => {
     return request(app)
       .get("/api/sign_in")
-      .send({ username: "Mejia", password: -9765 })
+      .send({ username: "Mejia", password: "-96676j5" })
       .expect(401)
-      .then(({ body: { message } }) => {
-        expect(message).to.eql("Wrong password");
+      .then(({ body }) => {
+        expect(body.message).to.eql("Wrong password");
       });
   });
 });

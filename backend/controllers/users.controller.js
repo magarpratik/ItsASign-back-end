@@ -1,7 +1,7 @@
 /* eslint-disable */
 const Joi = require("joi");
 const { Users, hashPassword } = require("../models/users.model");
-
+const bcrypt = require("bcrypt");
 exports.getUsers = (req, res) => {
   Users.find()
     .sort("createdAt")
@@ -130,20 +130,27 @@ exports.SignIn = (req, res) => {
   const { username, password } = req.body;
 
   const validUser = Joi.string().required().min(4).validate(username);
-  const validPassword = Joi.number().required().min(-100000).validate(password);
+  const validPassword = Joi.string().required().validate(password);
 
   if (validUser.error || validPassword.error) {
-    return res.status(400).send({ successful: false });
+    return res.status(401).send({ successful: false });
   } else {
     Users.findOne({ username }).then((user) => {
       if (!user) {
         return res.status(404).send({ message: "User does not exist" });
       } else if (user) {
-        if (user.password === password) {
-          return res.status(200).send({ successful: true });
-        } else {
-          return res.status(401).send({ message: "Wrong password" });
-        }
+        bcrypt.compare(password, user.password, function (err, result) {
+          if (err) {
+            return res
+              .status(401)
+              .send({ message: "there was an error signing in" });
+          } else if (result) {
+            return res.status(200).send({ successful: true });
+          } else
+            return res
+              .status(401)
+              .send({ successful: false, message: "Wrong password" });
+        });
       }
     });
   }
