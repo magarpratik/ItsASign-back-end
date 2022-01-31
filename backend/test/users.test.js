@@ -190,7 +190,7 @@ describe("POST /api/users/signup", () => {
       });
   });
 
-  xit("400: gives error if username already exists", () => {
+  xit("hash and save", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
@@ -205,6 +205,23 @@ describe("POST /api/users/signup", () => {
           success: false,
           error: body.error,
           message: "AndyRobots1 is already in use",
+        });
+      });
+  });
+  it.only("hashes password", () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        username: "Sidd",
+        email: "toyssuck@gmail.com",
+        password: "1001a994",
+        name: "siddrulles",
+      })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.eql({
+          success: true,
+          message: "Registration Success",
         });
       });
   });
