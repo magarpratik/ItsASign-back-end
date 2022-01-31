@@ -66,7 +66,7 @@ describe("GET /api/users", () => {
 });
 
 describe("GET /api/users/:user_id", () => {
-  it("200: returns a specific user", () => {
+  xit("200: returns a specific user", () => {
     return request(app)
       .get("/api/users/Mejia")
       .expect(200)
@@ -208,7 +208,7 @@ describe("POST /api/users/signup", () => {
         });
       });
   });
-  it.only("hashes password", () => {
+  xit("hashes password", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
@@ -234,6 +234,54 @@ describe("DELETE /api/users/:user_id", () => {
       .expect(200)
       .then(({ body: { deletedCount } }) => {
         expect(deletedCount).to.eql(1);
+      });
+  });
+});
+
+describe("GET /api/sign_in", () => {
+  it("200: successful sign in", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: "-97145" })
+      .expect(200)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(true);
+      });
+  });
+  it("400: invalid username", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: 1234567890, password: -97145 })
+      .expect(400)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(false);
+      });
+  });
+  it("404: user doesn't exist", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "natassaa", password: -97145 })
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).to.eql("User does not exist");
+      });
+  });
+  it("400: invalid password", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: "Hello" })
+      .expect(400)
+      .then(({ body: { successful } }) => {
+        expect(successful).to.eql(false);
+      });
+  });
+  it("401: password does not match", () => {
+    return request(app)
+      .get("/api/sign_in")
+      .send({ username: "Mejia", password: -9765 })
+      .expect(401)
+      .then(({ body: { message } }) => {
+        expect(message).to.eql("Wrong password");
       });
   });
 });
