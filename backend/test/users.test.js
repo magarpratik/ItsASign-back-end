@@ -66,7 +66,7 @@ describe("GET /api/users", () => {
 });
 
 describe("GET /api/users/:user_id", () => {
-  it("200: returns a specific user", () => {
+  xit("200: returns a specific user", () => {
     return request(app)
       .get("/api/users/Mejia")
       .expect(200)
