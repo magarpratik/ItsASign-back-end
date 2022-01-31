@@ -1,9 +1,9 @@
-const Joi = require('joi');
-const { Users } = require('../models/users.model');
+const Joi = require("joi");
+const { Users } = require("../models/users.model");
 
 exports.getUsers = (req, res) => {
   Users.find()
-    .sort('createdAt')
+    .sort("createdAt")
     .then((users) => {
       res.status(200).send({ users });
     })
@@ -20,7 +20,7 @@ exports.getUser = (req, res) => {
         const user = userArray[0];
         res.status(200).send({ user });
       } else {
-        res.status(400).send({ message: 'User does not exist' });
+        res.status(400).send({ message: "User does not exist" });
       }
     })
     .catch((err) => {
@@ -71,7 +71,7 @@ const userSchema = Joi.object().keys({
   username: Joi.string().required().min(4),
   email: Joi.string().email({ minDomainSegments: 2 }),
   password: Joi.string().required().min(4),
-  confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+  name: Joi.string().required().min(2),
 });
 exports.Signup = async (req, res) => {
   try {
@@ -91,21 +91,33 @@ exports.Signup = async (req, res) => {
     if (user) {
       return res.json({
         error: true,
-        message: 'Email is already in use',
+        message: "Email is already in use",
       });
+    } else {
+      // Check if the username is unique.
+      await Users.findOne({
+        username: result.value.username,
+      });
+      if (user) {
+        return res.json({
+          error: true,
+          message: `${user.username} is already in use`,
+        });
+      }
     }
 
     const newUser = new Users(result.value);
     await newUser.save();
     return res.status(200).json({
       success: true,
-      message: 'Registration Success',
+      message: "Registration Success",
     });
   } catch (error) {
     // console.error("signup-error", error);
     return res.status(400).json({
-      error: true,
-      message: 'Cannot Register',
+      success: false,
+      error: error,
+      message: "Cannot Register",
     });
   }
 };
