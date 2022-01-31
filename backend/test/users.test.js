@@ -153,14 +153,14 @@ describe("PATCH /api/users/:username", () => {
 });
 
 describe("POST /api/users/signup", () => {
-  xit("201: posts a user to the database", () => {
+  it.only("201: posts a user to the database", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
-        username: "AndRobots2",
-        email: "andyroby2@gmail.com",
-        password: "10021994",
-        name: "Andy1",
+        username: "testpr2ogress",
+        email: "testpr2ogress@gmail.com",
+        password: "100h21k994",
+        name: "Andy2441",
       })
       .expect(200)
       .then(({ body }) => {
@@ -239,7 +239,7 @@ describe("DELETE /api/users/:user_id", () => {
 });
 
 describe("GET /api/sign_in", () => {
-  it.only("200: successful sign in", () => {
+  it("200: successful sign in", () => {
     const username = "CharlotteThompson";
     const password = "password1";
     return request(app)
@@ -250,39 +250,43 @@ describe("GET /api/sign_in", () => {
       });
   });
   it("400: invalid username", () => {
+    const username = 456789;
+    const password = "password1";
     return request(app)
-      .get("/api/sign_in")
-      .send({ username: 1234567890, password: "97145" })
+      .get(`/api/sign_in/?username=456789&password=${password}`)
       .expect(401)
       .then(({ body: { successful } }) => {
         expect(successful).to.eql(false);
       });
   });
   it("404: user doesn't exist", () => {
+    const username = "hompson";
+    const password = "password1";
     return request(app)
-      .get("/api/sign_in")
-      .send({ username: "natassaa", password: "-97145" })
+      .get(`/api/sign_in/?username=${username}&password=${password}`)
       .expect(404)
       .then(({ body: { message } }) => {
         expect(message).to.eql("User does not exist");
       });
   });
   it("400: invalid password", () => {
+    const username = "CharlotteThompson";
+    const password = "@@@@//@";
     return request(app)
-      .get("/api/sign_in")
-      .send({ username: "Mejia", password: 5678 })
+      .get(`/api/sign_in/?username=${username}&password=${password}`)
       .expect(401)
-      .then(({ body: { successful } }) => {
-        expect(successful).to.eql(false);
+      .then((res) => {
+        expect(res.body.successful).to.eql(false);
       });
   });
   it("401: password does not match", () => {
+    const username = "Sidd3";
+    const password = "1001a9ff4";
     return request(app)
-      .get("/api/sign_in")
-      .send({ username: "Mejia", password: "-96676j5" })
+      .get(`/api/sign_in/?username=${username}&password=${password}`)
       .expect(401)
-      .then(({ body }) => {
-        expect(body.message).to.eql("Wrong password");
+      .then((res) => {
+        expect(res.body.message).to.eql("Wrong password");
       });
   });
 });

@@ -111,6 +111,7 @@ exports.Signup = async (req, res) => {
     const newUser = new Users(result.value);
 
     await newUser.save();
+    console.log(newUser);
 
     return res.status(200).json({
       success: true,
@@ -120,36 +121,50 @@ exports.Signup = async (req, res) => {
     // console.error("signup-error", error);
     return res.status(400).json({
       success: false,
-      error,
+      error: error,
       message: "Cannot Register",
     });
   }
 };
 
+//SING IN//
+const inputSchema = Joi.object().keys({
+  username: Joi.string().required().min(4),
+  password: Joi.string().required().min(4),
+});
+
 exports.SignIn = (req, res) => {
   const { username, password } = req.query;
+  const result = inputSchema.validate(req.query);
 
-  const validUser = Joi.string().required().min(4).validate(username);
-  const validPassword = Joi.string().required().validate(password);
-
-  if (validUser.error || validPassword.error) {
-    return res.status(401).send({ successful: false });
+  if (result.error) {
+    return res.json({
+      error: true,
+      successful: false,
+      status: 400,
+      message: result.error.message,
+    });
   } else {
     Users.findOne({ username }).then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User does not exist" });
-      } else if (user) {
+        return res
+          .status(404)
+          .send({ successful: false, message: "User does not exist" });
+      } else {
         bcrypt.compare(password, user.password, function (err, result) {
-          if (err) {
-            return res
-              .status(401)
-              .send({ message: "there was an error signing in" });
-          } else if (result) {
-            return res.status(200).send({ successful: true });
-          } else
+          if (result === false) {
             return res
               .status(401)
               .send({ successful: false, message: "Wrong password" });
+          } else if (result === true) {
+            return res
+              .status(200)
+              .send({ successful: true, username: user.username });
+          } else
+            return res.status(400).send({
+              successful: false,
+              message: "there was an error signing in",
+            });
         });
       }
     });
