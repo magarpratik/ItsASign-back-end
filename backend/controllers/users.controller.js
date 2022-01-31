@@ -71,7 +71,7 @@ const userSchema = Joi.object().keys({
   username: Joi.string().required().min(4),
   email: Joi.string().email({ minDomainSegments: 2 }),
   password: Joi.string().required().min(4),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+  name: Joi.string().required().min(2),
 });
 exports.Signup = async (req, res) => {
   try {
@@ -93,6 +93,17 @@ exports.Signup = async (req, res) => {
         error: true,
         message: "Email is already in use",
       });
+    } else {
+      // Check if the username is unique.
+      await Users.findOne({
+        username: result.value.username,
+      });
+      if (user) {
+        return res.json({
+          error: true,
+          message: `${user.username} is already in use`,
+        });
+      }
     }
 
     const newUser = new Users(result.value);
@@ -104,7 +115,8 @@ exports.Signup = async (req, res) => {
   } catch (error) {
     // console.error("signup-error", error);
     return res.status(400).json({
-      error: true,
+      success: false,
+      error: error,
       message: "Cannot Register",
     });
   }
