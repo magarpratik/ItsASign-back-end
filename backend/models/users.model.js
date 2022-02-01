@@ -6,13 +6,18 @@ const { Schema } = mongoose;
 const userSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
-    picture: { type: String, default: "my_picture" },
+    picture: { type: String, default: "avatar1" },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     progress: {
       completed_lessons: { type: Array, default: 1 },
-      total_xp: { type: Number, min: 1, max: 999999, default: 1 },
+      total_xp: {
+        type: Number,
+        min: 1,
+        max: 999999,
+        default: 1,
+      },
       badges: { type: Array },
     },
   },

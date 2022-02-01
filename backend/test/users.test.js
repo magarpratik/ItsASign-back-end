@@ -153,7 +153,7 @@ describe("PATCH /api/users/:username", () => {
 });
 
 describe("POST /api/users/signup", () => {
-  it.only("201: posts a user to the database", () => {
+  xit("201: posts a user to the database", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
@@ -279,7 +279,7 @@ describe("GET /api/sign_in", () => {
         expect(res.body.successful).to.eql(false);
       });
   });
-  it("401: password does not match", () => {
+  it.only("401: password does not match", () => {
     const username = "Sidd3";
     const password = "1001a9ff4";
     return request(app)

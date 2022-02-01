@@ -50,8 +50,13 @@ exports.getUserProgress = (req, res) => {
 
 exports.patchUserDetails = (req, res) => {
   const { username } = req.params;
-  const { email, password, progress } = req.body;
+  const { email, password, progress, picture } = req.body;
 
+  if (picture) {
+    Users.updateOne({ username }, { picture }).then((result) => {
+      res.status(201).send({ updated: result.modifiedCount });
+    });
+  }
   if (email) {
     Users.updateOne({ username }, { email }).then((result) => {
       res.status(201).send({ updated: result.modifiedCount });
@@ -153,9 +158,11 @@ exports.SignIn = (req, res) => {
       } else {
         bcrypt.compare(password, user.password, function (err, result) {
           if (result === false) {
-            return res
-              .status(401)
-              .send({ successful: false, message: "Wrong password" });
+            return res.json({
+              status: 401,
+              successful: false,
+              message: "Wrong password",
+            });
           } else if (result === true) {
             return res
               .status(200)
