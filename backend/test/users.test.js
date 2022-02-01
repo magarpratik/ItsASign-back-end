@@ -89,7 +89,7 @@ describe("GET /api/users/:user_id", () => {
       });
   });
 
-  it("400: handle a non-existent user", () => {
+  it.only("400: handle a non-existent user", () => {
     return request(app)
       .get("/api/users/nonexistentuser")
       .expect(400)
@@ -279,7 +279,7 @@ describe("GET /api/sign_in", () => {
         expect(res.body.successful).to.eql(false);
       });
   });
-  it.only("401: password does not match", () => {
+  it("401: password does not match", () => {
     const username = "Sidd3";
     const password = "1001a9ff4";
     return request(app)
