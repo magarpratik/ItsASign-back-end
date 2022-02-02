@@ -50,13 +50,8 @@ exports.getUserProgress = (req, res) => {
 
 exports.patchUserDetails = (req, res) => {
   const { username } = req.params;
-  const { email, password, progress, picture } = req.body;
+  const { email, password, progress } = req.body;
 
-  if (picture) {
-    Users.updateOne({ username }, { picture }).then((result) => {
-      res.status(201).send({ updated: result.modifiedCount });
-    });
-  }
   if (email) {
     Users.updateOne({ username }, { email }).then((result) => {
       res.status(201).send({ updated: result.modifiedCount });
@@ -70,6 +65,17 @@ exports.patchUserDetails = (req, res) => {
       res.status(201).send({ updated: result.modifiedCount });
     });
   }
+};
+
+exports.getRankedUsers = (req, res) => {
+  Users.find()
+    .sort({ "progress.total_xp": -1 })
+    .then((users) => {
+      res.status(200).send({ users });
+    })
+    .catch((err) => {
+      res.status(400).send(`There was an error with loading Users. ${err}`);
+    });
 };
 
 // Validate user schema
@@ -152,21 +158,22 @@ exports.SignIn = (req, res) => {
   } else {
     Users.findOne({ username }).then((user) => {
       if (!user) {
-        return res
-          .status(404)
-          .send({ successful: false, message: "User does not exist" });
+        return res.status(404).send({
+          successful: false,
+          message: "User does not exist",
+        });
       } else {
         bcrypt.compare(password, user.password, function (err, result) {
           if (result === false) {
-            return res.json({
-              status: 401,
+            return res.status(401).send({
               successful: false,
               message: "Wrong password",
             });
           } else if (result === true) {
-            return res
-              .status(200)
-              .send({ successful: true, username: user.username });
+            return res.status(200).send({
+              successful: true,
+              username: user.username,
+            });
           } else
             return res.status(400).send({
               successful: false,

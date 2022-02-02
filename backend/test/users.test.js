@@ -89,7 +89,7 @@ describe("GET /api/users/:user_id", () => {
       });
   });
 
-  it.only("400: handle a non-existent user", () => {
+  it("400: handle a non-existent user", () => {
     return request(app)
       .get("/api/users/nonexistentuser")
       .expect(400)
@@ -152,8 +152,8 @@ describe("PATCH /api/users/:username", () => {
   });
 });
 
-describe("POST /api/users/signup", () => {
-  xit("201: posts a user to the database", () => {
+xdescribe("POST /api/users/signup", () => {
+  it.only("201: posts a user to the database", () => {
     return request(app)
       .post("/api/users/signup")
       .send({
@@ -287,6 +287,17 @@ describe("GET /api/sign_in", () => {
       .expect(401)
       .then((res) => {
         expect(res.body.message).to.eql("Wrong password");
+      });
+  });
+});
+
+describe("GET /api/ranked_users", () => {
+  it.only("200: sorted array", () => {
+    return request(app)
+      .get(`/api/ranked_users`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users).to.be.sorted({ descending: true });
       });
   });
 });
