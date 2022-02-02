@@ -52,7 +52,11 @@ exports.patchUserDetails = (req, res) => {
   const { username } = req.params;
   const { email, password, progress, picture } = req.body;
 
-  if (email) {
+  if (picture) {
+    Users.updateOne({ username }, { picture }).then((result) => {
+      res.status(201).send({ updated: result.modifiedCount });
+    });
+  } else if (email) {
     Users.updateOne({ username }, { email }).then((result) => {
       res.status(201).send({ updated: result.modifiedCount });
     });
@@ -173,6 +177,7 @@ exports.SignIn = (req, res) => {
             return res.status(200).send({
               successful: true,
               username: user.username,
+              user: user,
             });
           } else
             return res.status(400).send({
