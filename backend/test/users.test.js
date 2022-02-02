@@ -291,13 +291,13 @@ describe("GET /api/sign_in", () => {
     });
 });
 
-xdescribe("GET /api/ranked_users", () => {
+describe("GET /api/ranked_users", () => {
     it.only("200: sorted array", () => {
         return request(app)
             .get(`/api/ranked_users`)
             .expect(200)
             .then(({ body }) => {
-                console.log(body);
+                expect(body.users).to.be.sorted({ descending: true });
             });
     });
 });
