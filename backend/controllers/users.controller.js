@@ -163,13 +163,16 @@ exports.SignIn = (req, res) => {
     Users.findOne({ username }).then((user) => {
       if (!user) {
         return res.status(404).send({
+          status: 404,
           successful: false,
           message: "User does not exist",
         });
       } else {
         bcrypt.compare(password, user.password, function (err, result) {
+          console.log(err, result);
           if (result === false) {
             return res.status(401).send({
+              status: 401,
               successful: false,
               message: "Wrong password",
             });
